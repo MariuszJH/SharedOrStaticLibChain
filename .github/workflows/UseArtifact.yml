@@ -47,8 +47,10 @@ jobs:
       run: |
         echo ls ${{github.workspace}}
         ls ${{github.workspace}}
+
         echo find ${{github.workspace}} -name Driver_d
         find ${{github.workspace}} -name Driver_d
+        
         echo cmake --build buildMake/Gnu -j8 --target run
         cmake --build buildMake/Gnu -j8 --target run
 
@@ -71,13 +73,32 @@ jobs:
 
     - name: Run executable obtained from artifact
       run: |
+        echo ls ${{github.workspace}}
+        ls ${{github.workspace}}
+
         echo find ${{github.workspace}} -name Driver_d
         find ${{github.workspace}} -name Driver_d
-        ls -l /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
-        chmod u+x /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
-        ls -l /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
-        echo /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
-        /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+
+        echo ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
+
+        echo chmod u+x ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        chmod u+x ${{github.workspace}}/Driver/bin/Debug/Driver_d
+
+        echo ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
+
+        echo ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        ${{github.workspace}}/Driver/bin/Debug/Driver_d
+
+      # echo find ${{github.workspace}} -name Driver_d
+      # find ${{github.workspace}} -name Driver_d
+      # ls -l /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+      # chmod u+x /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+      # ls -l /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+      # echo /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+      # /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+      
       # find Binaries_${{env.projectName}}_${{runner.os}}_Make -name ${{env.projectName}}_d
       # echo ls -l ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
       # chmod u+x ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
@@ -118,8 +139,10 @@ jobs:
       run: |
         echo ls ${{github.workspace}}
         ls ${{github.workspace}}
+
         echo find ${{github.workspace}} -name Driver_d
         find ${{github.workspace}} -name Driver_d
+        
         echo cmake --build buildMake/Clang -j8 --target run
         cmake --build buildMake/Clang -j8 --target run
 
@@ -142,13 +165,23 @@ jobs:
 
     - name: Run executable obtained from artifact
       run: |
+        echo ls ${{github.workspace}}
+        ls ${{github.workspace}}
+
         echo find ${{github.workspace}} -name Driver_d
         find ${{github.workspace}} -name Driver_d
-        ls -l /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
-        chmod u+x /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
-        ls -l /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
-        echo /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
-        /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+
+        echo ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
+
+        echo chmod u+x ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        chmod u+x ${{github.workspace}}/Driver/bin/Debug/Driver_d
+
+        echo ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
+
+        echo ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        ${{github.workspace}}/Driver/bin/Debug/Driver_d
 
 
   build-on-windows:
@@ -174,24 +207,26 @@ jobs:
       run: > 
         cmake -S . 
         -B buildMake/Msvc
-        -G "Unix Makefiles" 
+        -G "NMake Makefiles" 
         -D CMAKE_BUILD_TYPE=Debug
-        -D CMAKE_CXX_COMPILER=Msvc
+        -D CMAKE_CXX_COMPILER=cl
         -D BUILD_SHARED_LIBS=OFF
 
     - name: CMake build (NMake, Msvc, Debug)
       run: |
-        echo cmake --build buildMake/Msvc -j8
-        cmake --build buildMake/Msvc -j8
+        echo cmake --build buildMake/Msvc
+        cmake --build buildMake/Msvc
 
     - name: CMake run (NMake, Msvc, Debug)
       run: |
         echo ls ${{github.workspace}}
         ls ${{github.workspace}}
+
         echo find ${{github.workspace}} -name Driver_d
         find ${{github.workspace}} -name Driver_d
-        echo cmake --build buildMake/Msvc -j8 --target run
-        cmake --build buildMake/Msvc -j8 --target run
+        
+        echo cmake --build buildMake/Msvc --target run
+        cmake --build buildMake/Msvc --target run
 
     - name: Archive artifacts built on Mac
       uses: actions/upload-artifact@v4
@@ -213,10 +248,20 @@ jobs:
     - name: Run executable obtained from artifact
       shell: bash
       run: |
+        echo ls ${{github.workspace}}
+        ls ${{github.workspace}}
+        
         echo find ${{github.workspace}} -name Driver_d
         find ${{github.workspace}} -name Driver_d
-        ls -l /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
-        chmod u+x /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
-        ls -l /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
-        echo /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
-        /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+
+        echo ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
+
+        echo chmod u+x ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        chmod u+x ${{github.workspace}}/Driver/bin/Debug/Driver_d
+
+        echo ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
+
+        echo ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        ${{github.workspace}}/Driver/bin/Debug/Driver_d
