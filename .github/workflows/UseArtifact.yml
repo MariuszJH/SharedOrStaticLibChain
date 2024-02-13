@@ -246,22 +246,18 @@ jobs:
         path: ${{github.workspace}}
 
     - name: Run executable obtained from artifact
-      shell: bash
       run: |
-        echo ls ${{github.workspace}}
+        Write-Host ls ${{github.workspace}}
         ls ${{github.workspace}}
         
-        echo find ${{github.workspace}} -name Driver_d
-        find ${{github.workspace}} -name Driver_d
+        Write-Host ls ${{github.workspace}} -Include Driver_d -Recurse -Name
+        ls ${{github.workspace}} -Include Driver_d -Recurse -Name
 
-        echo ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
-        ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        Write-Host ls ${{github.workspace}}/Driver/bin/Debug/Driver_d -Name
+        ls ${{github.workspace}}/Driver/bin/Debug/Driver_d -Name
 
-        echo chmod u+x ${{github.workspace}}/Driver/bin/Debug/Driver_d
-        chmod u+x ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        Write-Host ls ${{github.workspace}}\Driver\bin\Debug\Driver_d -Name
+        ls ${{github.workspace}}\Driver\bin\Debug\Driver_d -Name
 
-        echo ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
-        ls -l ${{github.workspace}}/Driver/bin/Debug/Driver_d
-
-        echo ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        Write-Host ${{github.workspace}}/Driver/bin/Debug/Driver_d
         ${{github.workspace}}/Driver/bin/Debug/Driver_d
