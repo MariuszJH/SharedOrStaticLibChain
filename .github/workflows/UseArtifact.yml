@@ -218,6 +218,7 @@ jobs:
         cmake --build buildMake/Msvc
 
     - name: CMake run (NMake, Msvc, Debug)
+      shell: bash
       run: |
         echo ls ${{github.workspace}}
         ls ${{github.workspace}}
@@ -250,14 +251,11 @@ jobs:
         Write-Host ls ${{github.workspace}}
         ls ${{github.workspace}}
         
-        Write-Host ls ${{github.workspace}} -Include Driver_d -Recurse -Name
-        ls ${{github.workspace}} -Include Driver_d -Recurse -Name
+        Write-Host ls ${{github.workspace}} -Include Driver_d.exe -Recurse -Name
+        ls ${{github.workspace}} -Include Driver_d -Recurse.exe -Name
 
-        Write-Host ls ${{github.workspace}}/Driver/bin/Debug/Driver_d -Name
-        ls ${{github.workspace}}/Driver/bin/Debug/Driver_d -Name
+        Write-Host ls ${{github.workspace}}\Driver\bin\Debug\Driver_d.exe -Name
+        ls ${{github.workspace}}\Driver\bin\Debug\Driver_d.exe -Name
 
-        Write-Host ls ${{github.workspace}}\Driver\bin\Debug\Driver_d -Name
-        ls ${{github.workspace}}\Driver\bin\Debug\Driver_d -Name
-
-        Write-Host ${{github.workspace}}/Driver/bin/Debug/Driver_d
-        ${{github.workspace}}/Driver/bin/Debug/Driver_d
+        Write-Host ${{github.workspace}}\Driver\bin\Debug\Driver_d.exe
+        ${{github.workspace}}\Driver\bin\Debug\Driver_d.exe
