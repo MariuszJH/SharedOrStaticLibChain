@@ -66,7 +66,7 @@ jobs:
 
     - name: Run executable obtained from artifact
       run: |
-        find ${{github.workspace}} -name ${{env.projectName}}_d
+        find ${{github.workspace}} -name Driver_d
       # find Binaries_${{env.projectName}}_${{runner.os}}_Make -name ${{env.projectName}}_d
       # echo ls -l ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
       # chmod u+x ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
