@@ -83,3 +83,140 @@ jobs:
       # chmod u+x ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
       # echo ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
       # ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
+
+
+  build-on-macos:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Tool versions
+      shell: bash
+      run: | 
+        echo clang++ --version
+        clang++ --version
+        echo 
+        echo cmake --version
+        cmake --version
+
+    - name: CMake configure (Make, Clang, Debug)
+      run: > 
+        cmake -S . 
+        -B buildMake/Clang
+        -G "Unix Makefiles" 
+        -D CMAKE_BUILD_TYPE=Debug
+        -D CMAKE_CXX_COMPILER=clang++
+        -D BUILD_SHARED_LIBS=OFF
+
+    - name: CMake build (Make, Clang, Debug)
+      run: |
+        echo cmake --build buildMake/Clang -j8
+        cmake --build buildMake/Clang -j8
+
+    - name: CMake run (Make, Clang, Debug)
+      run: |
+        echo ls ${{github.workspace}}
+        ls ${{github.workspace}}
+        echo find ${{github.workspace}} -name Driver_d
+        find ${{github.workspace}} -name Driver_d
+        echo cmake --build buildMake/Clang -j8 --target run
+        cmake --build buildMake/Clang -j8 --target run
+
+    - name: Archive artifacts built on Mac
+      uses: actions/upload-artifact@v4
+      with:
+        name: Binaries_${{env.projectName}}_${{runner.os}}_Make
+        path: ${{github.workspace}}/buildMake/Clang/buildOut
+
+
+  use-on-mac:
+    needs: build-on-macos
+    runs-on: macos-latest
+    steps:
+    - name: Use artifacts built on Mac
+      uses: actions/download-artifact@v4
+      with:
+        name: Binaries_${{env.projectName}}_${{runner.os}}_Make
+        path: ${{github.workspace}}
+
+    - name: Run executable obtained from artifact
+      run: |
+        echo find ${{github.workspace}} -name Driver_d
+        find ${{github.workspace}} -name Driver_d
+        ls -l /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+        chmod u+x /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+        ls -l /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+        echo /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+        /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+
+
+  build-on-windows:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Setup MSVC compiler
+      uses: ilammy/msvc-dev-cmd@v1
+
+    - name: Tool versions
+      shell: bash
+      run: | 
+        echo cl
+        cl
+        echo 
+        echo cmake --version
+        cmake --version
+        echo 
+
+    - name: CMake configure (NMake, Msvc, Debug)
+      run: > 
+        cmake -S . 
+        -B buildMake/Msvc
+        -G "Unix Makefiles" 
+        -D CMAKE_BUILD_TYPE=Debug
+        -D CMAKE_CXX_COMPILER=Msvc
+        -D BUILD_SHARED_LIBS=OFF
+
+    - name: CMake build (NMake, Msvc, Debug)
+      run: |
+        echo cmake --build buildMake/Msvc -j8
+        cmake --build buildMake/Msvc -j8
+
+    - name: CMake run (NMake, Msvc, Debug)
+      run: |
+        echo ls ${{github.workspace}}
+        ls ${{github.workspace}}
+        echo find ${{github.workspace}} -name Driver_d
+        find ${{github.workspace}} -name Driver_d
+        echo cmake --build buildMake/Msvc -j8 --target run
+        cmake --build buildMake/Msvc -j8 --target run
+
+    - name: Archive artifacts built on Mac
+      uses: actions/upload-artifact@v4
+      with:
+        name: Binaries_${{env.projectName}}_${{runner.os}}_Make
+        path: ${{github.workspace}}/buildMake/Msvc/buildOut
+
+
+  use-on-windows:
+    needs: build-on-windows
+    runs-on: windows-latest
+    steps:
+    - name: Use artifacts built on Windows
+      uses: actions/download-artifact@v4
+      with:
+        name: Binaries_${{env.projectName}}_${{runner.os}}_Make
+        path: ${{github.workspace}}
+
+    - name: Run executable obtained from artifact
+      shell: bash
+      run: |
+        echo find ${{github.workspace}} -name Driver_d
+        find ${{github.workspace}} -name Driver_d
+        ls -l /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+        chmod u+x /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+        ls -l /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+        echo /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
+        /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
