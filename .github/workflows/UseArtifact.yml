@@ -49,7 +49,7 @@ jobs:
         cmake --build buildMake/Gnu -j8 --target run
 
     - name: Archive artifacts built on Linux
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v2
       with:
         name: Binaries_${{env.projectName}}_${{runner.os}}_Make
         path: ${{github.workspace}}/buildMake/Gnu/buildOut
@@ -60,13 +60,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Use artifacts built on Linux
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v2
       with:
         name: Binaries_${{env.projectName}}_${{runner.os}}_Make
 
     - name: Run executable obtained from artifact
       run: |
-        echo ls ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
-      # echo cmake --build --preset Make-Gnu-Debug --target run
-      # cmake --build --preset Make-Gnu-Debug --target run
-
+        echo ls -l ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
+        chmod u+x ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
+        echo ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
+        ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
