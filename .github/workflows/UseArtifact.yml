@@ -63,10 +63,12 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: Binaries_${{env.projectName}}_${{runner.os}}_Make
+        path: ${{github.workspace}}
 
     - name: Run executable obtained from artifact
       run: |
         find ${{github.workspace}} -name Driver_d
+        ls -l /home/runner/work/SharedOrStaticLibChain/SharedOrStaticLibChain/Driver/bin/Debug/Driver_d
       # find Binaries_${{env.projectName}}_${{runner.os}}_Make -name ${{env.projectName}}_d
       # echo ls -l ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
       # chmod u+x ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
