@@ -1,0 +1,72 @@
+name: Use artifacts without CMakePresets.json, no parameter matrix
+
+on:
+  push: 
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+
+env:
+  projectName: SharedOrStaticLibChain
+
+jobs:
+
+  build-on-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Tool versions
+      shell: bash
+      run: | 
+        echo g++ --version
+        g++ --version
+        echo 
+        echo clang++ --version
+        clang++ --version
+        echo 
+        echo cmake --version
+        cmake --version
+
+    - name: CMake configure (Make, Gnu, Debug)
+      run: > 
+        cmake -S . 
+        -B buildMake/Gnu
+        -G "Unix Makefiles" 
+        -D CMAKE_BUILD_TYPE=Debug
+        -D CMAKE_CXX_COMPILER=g++
+        -D BUILD_SHARED_LIBS=OFF
+
+    - name: CMake build (Make, Gnu, Debug)
+      run: |
+        echo cmake --build buildMake/Gnu -j8
+        cmake --build buildMake/Gnu -j8
+
+    - name: CMake run (Make, Gnu, Debug)
+      run: |
+        echo cmake --build buildMake/Gnu -j8 --target run
+        cmake --build buildMake/Gnu -j8 --target run
+
+    - name: Archive artifacts built on Linux
+      uses: actions/upload-artifact@v3
+      with:
+        name: Binaries_${{env.projectName}}_${{runner.os}}_Make
+        path: ${{github.workspace}}/buildMake/Gnu/buildOut
+
+
+  use-on-ubuntu:
+    needs: build-on-ubuntu
+    runs-on: ubuntu-latest
+    steps:
+    - name: Use artifacts built on Linux
+      uses: actions/download-artifact@v3
+      with:
+        name: Binaries_${{env.projectName}}_${{runner.os}}_Make
+
+    - name: Run executable obtained from artifact
+      run: |
+        echo ls ${{github.workspace}}/buildMake/Gnu/buildOut/${{env.projectName}}/bin/Debug/${{env.projectName}}_d
+      # echo cmake --build --preset Make-Gnu-Debug --target run
+      # cmake --build --preset Make-Gnu-Debug --target run
+
